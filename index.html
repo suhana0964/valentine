@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divuu 💘 Sonaa</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #2b2b2b;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      top: -20px;
+      font-size: 18px;
+      animation: fall 6s linear infinite;
+      opacity: 0.85;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-20px); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    section {
+      position: relative;
+      z-index: 2;
+      padding: 70px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h1, h2 {
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      margin-top: 25px;
+    }
+
+    /* Buttons */
+    .btns {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    button {
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.2s ease;
+      font-weight: 600;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    }
+    #yesBtn:hover {
+      transform: scale(1.08);
+    }
+
+    #noBtn {
+      background: #ffffff;
+      color: #444;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    /* Story */
+    .story-item {
+      text-align: left;
+      margin: 18px auto;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.65);
+      border-radius: 14px;
+      max-width: 700px;
+      font-size: 17px;
+    }
+
+    .divider {
+      margin: 40px auto 10px;
+      font-size: 32px;
+    }
+
+    /* Quiz styling */
+    .quiz-question {
+      text-align: left;
+      margin: 18px auto;
+      padding: 18px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 16px;
+      max-width: 700px;
+    }
+
+    .quiz-question p {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .options label {
+      display: block;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.7);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .options label:hover {
+      transform: scale(1.02);
+    }
+
+    .submitBtn {
+      background: #7b2cbf;
+      color: #fff;
+      margin-top: 25px;
+      box-shadow: 0 5px 15px rgba(123,44,191,0.35);
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* Popup success screen */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup h2 {
+      color: #ff4d6d;
+      margin-bottom: 10px;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      background: #ff4d6d;
+      color: white;
+    }
+
+    footer {
+      padding: 40px;
+      text-align: center;
+      opacity: 0.85;
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background music (plays on YES click) -->
+  <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Section 1: Valentine Question -->
+  <section>
+    <div class="card">
+      <h1>Hey Divuu 💕</h1>
+      <p>I made something special just for you 🥺💗</p>
+
+      <div class="divider">💌</div>
+      <h2>Divuu… Will you be my Valentine? 😭💘</h2>
+
+      <div class="btns">
+        <button id="yesBtn">YES 💖</button>
+        <button id="noBtn">NO 😶</button>
+      </div>
+
+      <p style="margin-top: 18px; font-size: 15px; opacity: 0.85;">
+        (Don’t click NO… it’s shy 😭)
+      </p>
+    </div>
+  </section>
+
+  <!-- Section 2: Our Story -->
+  <section>
+    <div class="card">
+      <h2>Our Story 💞</h2>
+      <p>Before you answer… let me remind you why you’re my favorite person ✨</p>
+
+      <div class="story-item">🌸 The day you came into my life: <b>everything got softer, happier, and more beautiful.</b></div>
+      <div class="story-item">😂 My favourite memory with you: <b>every silly moment with you makes my heart feel full.</b></div>
+      <div class="story-item">💗 What I love about you: <b>you make me feel safe, understood, and smiled — even on bad days.</b></div>
+      <div class="story-item">🌙 What I wish for us: <b>more moments, more laughter, and a forever with you.</b></div>
+
+      <div class="divider">💘</div>
+      <p style="font-weight: 700;">One more thing… a quiz 😭💗</p>
+    </div>
+  </section>
+
+  <!-- Section 3: Valentine Quiz -->
+  <section>
+    <div class="card">
+      <h2>Divuu’s Valentine Quiz 🧸💌</h2>
+      <p>Answer honestly 😤💕</p>
+
+      <form id="quizForm">
+
+        <div class="quiz-question">
+          <p>1) Who is the cutest couple ever?</p>
+          <div class="options">
+            <label><input type="radio" name="q1" value="1"> Divuu 💘 Sonaa</label>
+            <label><input type="radio" name="q1" value="0"> Someone else 😶</label>
+            <label><input type="radio" name="q1" value="0"> My phone and me 😭</label>
+          </div>
+        </div>
+
+        <div class="quiz-question">
+          <p>2) What date should we go on?</p>
+          <div class="options">
+            <label><input type="radio" name="q2" value="1"> Movie + snacks 🍿</label>
+            <label><input type="radio" name="q2" value="1"> Long drive + music 🚗</label>
+            <label><input type="radio" name="q2" value="0"> Candle light dinner 🕯️</label>
+          </div>
+        </div>
+
+        <div class="quiz-question">
+          <p>3) Final question: Will you be my Valentine?</p>
+          <div class="options">
+            <label><input type="radio" name="q3" value="1"> YESSSS 💗😭</label>
+            <label><input type="radio" name="q3" value="0"> NO 😔</label>
+          </div>
+        </div>
+
+        <button type="submit" class="submitBtn">Submit 💘</button>
+      </form>
+
+      <div id="result"></div>
+    </div>
+  </section>
+
+  <footer>
+    Made with 💖 by <b>Sonaa</b> for <b>Divuu</b>.
+  </footer>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>YAYYYY DIVUU 😭💘</h2>
+      <p>You just made my whole heart smile 💗</p>
+      <p style="margin-top: 10px;">Now you are officially my Valentine 🥰</p>
+      <button onclick="closePopup()">Aww okay 💕</button>
+    </div>
+  </div>
+
+  <script>
+    // Floating hearts generator
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 2 + 4) + "s";
+      heart.style.fontSize = (Math.random() * 16 + 14) + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+    setInterval(createHeart, 350);
+
+    // NO button runs away
+    const noBtn = document.getElementById("noBtn");
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * 300 - 150;
+      const y = Math.random() * 250 - 125;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // YES click popup + music start
+    const yesBtn = document.getElementById("yesBtn");
+    yesBtn.addEventListener("click", () => {
+      const music = document.getElementById("bgMusic");
+      music.play();
+
+      openPopup();
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+
+    // Quiz submit
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const q3 = document.querySelector('input[name="q3"]:checked');
+
+      if (!q1 || !q2 || !q3) {
+        document.getElementById("result").innerHTML = "Divuu please answer all questions 😭💗";
+        return;
+      }
+
+      score += parseInt(q1.value);
+      score += parseInt(q2.value);
+      score += parseInt(q3.value);
+
+      if (score >= 3) {
+        document.getElementById("result").innerHTML = "Perfect score 😭💘 YOU ARE MY VALENTINE!";
+        openPopup();
+      } else {
+        document.getElementById("result").innerHTML = "Hmm 😶 Try again... (only YES works 😭💗)";
+      }
+    });
+
+    // Popup functions
+    function openPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
